@@ -1,0 +1,21 @@
+*:not(dialog) {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.hidden {
+    display: none;
+}
+
+.tooltip {
+    display: flex;
+    position: absolute;
+    flex-direction: column;
+    top: 95%;
+    right: 1rem;
+    z-index: 99;
+    a {
+
+    }
+}

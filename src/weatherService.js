@@ -18,9 +18,9 @@ export class weatherService {
     async filterWeather(objPromise) {
         const weatherObj = await objPromise;
         const currCondition = weatherObj["currentConditions"];
-        const {resolvedAddress: addr} = weatherObj;
+        const {resolvedAddress: addr, queryCost: cost} = weatherObj;
         const {datetime, temp, feelslike, conditions, icon: iconDes} = currCondition;
-        return {addr, datetime, temp, feelslike, conditions, iconDes};
+        return {addr, cost, datetime, temp, feelslike, conditions, iconDes};
     }
 
 }
