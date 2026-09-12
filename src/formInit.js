@@ -79,4 +79,6 @@ export function initForm() {
         // handle display
     })
 
+    return form;
+
 }

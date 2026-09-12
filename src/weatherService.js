@@ -1,3 +1,9 @@
+import clearPath from "./assets/clearBG.jpg";
+import cloudyPath from "./assets/cloudyBG.jpg";
+import rainPath from "./assets/rainBG.jpg";
+import snowPath from "./assets/snowBG.jpg";
+import stormPath from "./assets/stormBG.jpg";
+
 export class weatherService {  
     #api;
     baseURL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
@@ -19,8 +25,26 @@ export class weatherService {
         const weatherObj = await objPromise;
         const currCondition = weatherObj["currentConditions"];
         const {resolvedAddress: addr, queryCost: cost} = weatherObj;
-        const {datetime, temp, feelslike, conditions, icon: iconDes} = currCondition;
-        return {addr, cost, datetime, temp, feelslike, conditions, iconDes};
+        const {datetime, temp, feelslike, conditions, icon: stickerDes} = currCondition;
+
+        let BGImgPath;
+        if (/cloudy/i.test(conditions)) {
+            BGImgPath = cloudyPath;
+        }
+        else if (/thunder/i.test(conditions)) {
+            BGImgPath = stormPath;
+        }
+        else if (/rain|shower/i.test(conditions)) {
+            BGImgPath = rainPath;
+        }
+        else if (/snow/i.test(conditions)) {
+            BGImgPath = snowPath;
+        }
+        else{ 
+            BGImgPath = clearPath;
+        }
+
+        return {addr, cost, datetime, temp, feelslike, stickerDes, BGImgPath};
     }
 
 }
