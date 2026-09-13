@@ -1,6 +1,7 @@
 
 export function initForm() {
     const form = document.createElement('form');
+    form.className = 'form';
 
     const header = document.createElement('div');
     header.textContent = "Update Information";
@@ -9,6 +10,7 @@ export function initForm() {
     const modeTitle = document.createElement('p');
     modeTitle.textContent = "Mode";
     const modeCont = document.createElement('div');
+    modeCont.className = 'modeCont';
     const modeArr = ['current', 'weekly', 'fifteen'];
     modeArr.forEach((str, i) => {
         const label = document.createElement('label');
@@ -23,6 +25,7 @@ export function initForm() {
 
     // location
     const locLabel = document.createElement('label');
+    locLabel.className = 'locLabel';
     const locInput = document.createElement('input');
     locInput.required = true;
     locInput.type = "text";

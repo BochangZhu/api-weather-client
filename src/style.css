@@ -3,9 +3,33 @@
     margin: 0;
     box-sizing: border-box;
 }
+img {
+    min-width: 0;
+    min-height: 0;
+}
 
-.hidden {
-    display: none;
+form {
+    display: flex;
+    flex-direction: column;
+    .modeCont {
+        display: flex;
+        justify-content: space-around;
+        label {
+            display: flex;
+            gap: 6px;
+        }
+    }
+    .locLabel {
+        display: flex;
+        position: relative;
+        img {
+            width: 30px;
+            height: 30px;
+            position: absolute;
+            right: 6px;
+            top: 50%;
+        }
+    }
 }
 
 .tooltip {
@@ -15,7 +39,132 @@
     top: 95%;
     right: 1rem;
     z-index: 99;
+    border-radius: 25px;
     a {
+        all: unset;
+        font-weight: bold;
+        font-style: italic;
+        cursor: pointer;
+        transition: transform 0.05s ease-in;
+        &:hover {
+            transform: scale(1.05);
+            text-decoration: underline;
+        }
+    }
+}
+.hidden {
+    display: none !important;
+}
+
+body {
+    
+}
+
+.mainCont {
+    width: 70vw;
+    height: 80vh;
+    display: grid;
+    grid-template: 7fr 3fr / 7fr 3fr;
+    grid-template-areas: 
+    "submain form"
+    "weekly weekly";
+    .submain {
+        position: relative;
+        display: grid;
+        grid-template: 2fr 1fr 1fr / 1fr 2fr 1fr;
+        grid-template-areas: 
+        "img location temp"
+        "img condition temp"
+        "img time temp";
+        grid-area: submain;
+        .location {
+            grid-area: location;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+        .tempCont {
+            grid-area: temp;
+        }
+        .conditions {
+            grid-area: condition;
+        }
+        .dateTime {
+            grid-area: time
+        }
+        .weatherImg {
+            grid-area: img;
+        }
+        .toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 65px;
+            height: 35px;
+            background-color: #c3d6ef;
+            border-radius: 75%;
+            cursor: pointer;
+            user-select: none;
+            .slider {
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                width: 25px;
+                height: 25px;
+                background-color: #0490d6;
+                border-radius: 50%;
+                transition: transform 0.25 ease;
+                z-index: 1;
+            }
+            input:checked + .slider {
+                transform: translateX(20px);
+            }
+            input:checked ~ .celsius {
+                color: white;
+            }
+            input:checked ~ .faren {
+                color: grey;
+            }
+            span {
+                z-index: 2;
+            }
+            .celsius {
+                color: grey;
+            }
+            .faren {
+                color: white;
+            }
+        }
+    }
+    .form {
+        grid-area: form;
+    }
+    .weeklyPanel {
+        grid-area: weekly;
+        display: flex;
+        overflow-x: auto;
+        display: grid;
+        grid-template-rows: 1fr 3fr;
+        .previewCont {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+        .preview {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            .previewIcon {
+                width: 60px;
+                height: 60px;
+            }
+        }
 
     }
+
+
+    
 }
