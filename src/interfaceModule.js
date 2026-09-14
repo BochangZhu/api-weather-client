@@ -1,4 +1,4 @@
-import { initForm } from "./formInit";
+import { initForm } from "./formInit.js";
 import cloudyIcon from "./assets/cloudyIcon.svg";
 import rainyIcon from "./assets/rainyIcon.svg";
 import snowyIcon from "./assets/snowyIcon.svg";
@@ -26,7 +26,7 @@ export function boardInit() {
     temperature.textContent = '--';
     const unit = document.createElement('span');
     unit.className = "unit";
-    unit.textContent = '°C';
+    unit.textContent = '°';
     temperatureCont.append(temperature, unit);
     const dateTime = document.createElement('div');
     dateTime.className = 'dateTime';
@@ -48,11 +48,12 @@ export function boardInit() {
     faren.className = 'faren';
     toggle.append(tempInput, slider, faren, celsius);
 
-    submain.append(temperatureCont,dateTime,location, unit, weatherImg, conditions, toggle);
+    submain.append(temperatureCont,dateTime,location, weatherImg, conditions, toggle);
 
     const weeklyPanel = document.createElement('div');
     weeklyPanel.className = "weeklyPanel";
-    const weeklyTitle = "~ DAY FORECAST";
+    const weeklyTitle = document.createElement('div');
+    weeklyTitle.textContent = "~ DAY FORECAST";
     weeklyTitle.className = 'weeklyTitle';
     const previewCont = document.createElement('div');
     previewCont.className = 'previewCont';
@@ -84,8 +85,15 @@ export function boardInit() {
 
     mainCont.append(submain, form, weeklyPanel);
 
+    document.body.appendChild(mainCont);
+
 }
 
 export function boardUpdate() {
 
 };
+
+
+export function bgIMGReplace(imgPath) {
+    document.body.setAttribute('style', `--bg-image: url(${imgPath})`);    
+}

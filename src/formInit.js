@@ -8,7 +8,7 @@ export function initForm() {
     header.className = "header";
     // Mode
     const modeTitle = document.createElement('p');
-    modeTitle.textContent = "Mode";
+    modeTitle.textContent = "Mode: ";
     const modeCont = document.createElement('div');
     modeCont.className = 'modeCont';
     const modeArr = ['current', 'weekly', 'fifteen'];
@@ -31,6 +31,8 @@ export function initForm() {
     locInput.type = "text";
     locInput.name = 'location';
     locInput.value = "London,UK";
+    const locPara = document.createElement('p');
+    locPara.textContent = 'Location: ';
     const question = document.createElement('img');
     question.className = "questionIcon";
     (async () => {
@@ -42,7 +44,7 @@ export function initForm() {
             question.src = '#';
         }
     })();
-    locLabel.append("Location", locInput, question);
+    locLabel.append(locPara, locInput, question);
 
     const tooltip = document.createElement('div');
     tooltip.className = "tooltip hidden";
@@ -73,13 +75,13 @@ export function initForm() {
     })
 
     const confirm = document.createElement('button');
-    confirm.textContent = "Access Weather";
+    confirm.textContent = "Update Weather";
     confirm.type = 'submit';
 
     form.append(header, modeTitle, modeCont, locLabel, tooltip, confirm);
     
-    form.addEventListener('submit', () => {
-        // handle display
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
     })
 
     return form;

@@ -8,9 +8,34 @@ img {
     min-height: 0;
 }
 
+input,button {
+    font: inherit;
+}
+
+:root {
+    --base-font: 'Hachi Maru Pop', cursive;
+
+    --big-emph: bold 50px var(--base-font);
+    --mid-emph: bold 30px var(--base-font);
+    --mid-normal: 25px var(--base-font);
+    --sm-normal: 17.5px var(--base-font);
+    --sm-emph: bold 17.5px var(--base-font);
+
+    --form-sm: 10px "Charis SIL", serif;
+    --form-mid: bold 12px "Charis SIL", serif;
+    --form-big: 17px "Charis SIL", serif;
+}
 form {
-    display: flex;
-    flex-direction: column;
+    font: var(--form-sm);
+    padding: 6px 12px;
+    display: grid;
+    grid-auto-flow: row;
+    grid-auto-columns: 1fr ;
+    gap: 6px;
+    .header {
+        font: var(--form-big);
+        margin-bottom: 12px;
+    }
     .modeCont {
         display: flex;
         justify-content: space-around;
@@ -19,8 +44,13 @@ form {
             gap: 6px;
         }
     }
+    p {
+        font: var(--form-mid)
+    }
     .locLabel {
         display: flex;
+        flex-direction: column;
+        gap: 6px;
         position: relative;
         img {
             width: 30px;
@@ -30,6 +60,18 @@ form {
             top: 50%;
         }
     }
+
+    input {
+        cursor: pointer;
+        background: transparent;
+        outline:none;
+        border: 1px solid #ccc;
+        padding: 5px 7.5px; 
+        width: 50%;
+        border-radius: 15px;
+    }
+
+
 }
 
 .tooltip {
@@ -57,42 +99,77 @@ form {
 }
 
 body {
-    
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: var(--bg-image, url(./assets/clearBG.jpg)) center / cover no-repeat;
+    filter: blur(4.5px);
+    transform: scale(1.05);
 }
 
 .mainCont {
     width: 70vw;
     height: 80vh;
     display: grid;
-    grid-template: 7fr 3fr / 7fr 3fr;
+    grid-template: 6fr 0.25fr 4fr / 7fr 0.25fr 3fr;
     grid-template-areas: 
-    "submain form"
-    "weekly weekly";
+    "submain . form"
+    ". . ."
+    "weekly weekly weekly";
+    border: 3px solid #ccc;
+    border-radius: 25px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.175);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
     .submain {
         position: relative;
         display: grid;
-        grid-template: 2fr 1fr 1fr / 1fr 2fr 1fr;
+        grid-template: 2fr 1fr 1fr / 1fr 0.2fr 1.4fr 0.6fr;
         grid-template-areas: 
-        "img location temp"
-        "img condition temp"
-        "img time temp";
+        "img . location temp"
+        "img . condition temp"
+        "img . time temp";
         grid-area: submain;
         .location {
             grid-area: location;
-            font-size: 1.25rem;
-            font-weight: bold;
-        }
-        .tempCont {
-            grid-area: temp;
+            align-self: center;
+            font: var(--mid-emph);
         }
         .conditions {
             grid-area: condition;
+            font: var(--sm-emph);
         }
         .dateTime {
-            grid-area: time
+            grid-area: time;
+            font: var(--sm-normal);
         }
         .weatherImg {
             grid-area: img;
+            width: 200px;
+            height: 200px;
+            place-self: center;
+        }        
+        .tempCont {
+            grid-area: temp;
+            display: flex;
+            gap: 15px;
+            place-self: center;
+            align-items: center;
+            justify-content: center;
+            &>*{
+                font: var(--big-emph);
+            }
         }
         .toggle {
             position: absolute;
@@ -143,10 +220,14 @@ body {
     }
     .weeklyPanel {
         grid-area: weekly;
-        display: flex;
         overflow-x: auto;
         display: grid;
         grid-template-rows: 1fr 3fr;
+        border-top: 2px dashed #ccc;
+        padding: 12px 0 0 6px;
+        .weeklyTitle {
+            font: var(--sm-emph);
+        }
         .previewCont {
             display: flex;
             align-items: center;

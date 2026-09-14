@@ -24,7 +24,7 @@ export class weatherService {
     async fetch7days(location) {
         const start = (new Date()).getTime();
         const end = addDays(new Date(), 6).getTime();
-        const currURL = `${this.baseURL + location}/${start}/${end}?key=${this.#api}&include=current,days&elements=datetime,temp,conditions`;
+        const currURL = `${this.baseURL + location}/${start}/${end}?key=${this.#api}&include=current,days&elements=datetime,temp,conditions,icon`;
         const response = await fetch(currURL);
         if (!response.ok) throw new Error(`API Request fails for fetching 7 days: ${response.status}`);
         return response.json();
@@ -33,7 +33,7 @@ export class weatherService {
     async fetch15days(location) {
         const start = (new Date()).getTime();
         const end = addDays(new Date(), 14).getTime();
-        const currURL = `${this.baseURL + location}/${start}/${end}?key=${this.#api}&include=current,days&elements=datetime,temp,conditions`;
+        const currURL = `${this.baseURL + location}/${start}/${end}?key=${this.#api}&include=current,days&elements=datetime,temp,conditions,icon`;
         const response = await fetch(currURL);
         if (!response.ok) throw new Error(`API Request fails for fetching 15 days: ${response.status}`);
         return response.json();
@@ -43,7 +43,7 @@ export class weatherService {
     async filterWeather(objPromise) {
         const weatherObj = await objPromise;
         const currCondition = weatherObj["currentConditions"];
-        const days = weatherObj?.days;
+        const daysArr = weatherObj?.days;
         const {resolvedAddress: addr} = weatherObj;
         const {datetime, temp, conditions, icon: stickerDes} = currCondition;
 
@@ -64,7 +64,7 @@ export class weatherService {
             BGImgPath = clearPath;
         }
 
-        return {addr, datetime, temp, stickerDes, BGImgPath, days};
+        return {addr, datetime, temp, stickerDes, BGImgPath, daysArr};
     }
 
 }
