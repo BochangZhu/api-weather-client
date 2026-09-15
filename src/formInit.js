@@ -4,14 +4,14 @@ export function initForm() {
     form.className = 'form';
 
     const header = document.createElement('div');
-    header.textContent = "Update Information";
+    header.textContent = "Settings";
     header.className = "header";
     // Mode
     const modeTitle = document.createElement('p');
     modeTitle.textContent = "Mode: ";
     const modeCont = document.createElement('div');
     modeCont.className = 'modeCont';
-    const modeArr = ['current', 'weekly', 'fifteen'];
+    const modeArr = ['Now', '7 Days', '15 Days'];
     modeArr.forEach((str, i) => {
         const label = document.createElement('label');
         const radio = document.createElement('input');
@@ -30,7 +30,7 @@ export function initForm() {
     locInput.required = true;
     locInput.type = "text";
     locInput.name = 'location';
-    locInput.value = "London,UK";
+    locInput.placeholder = "London,UK";
     const locPara = document.createElement('p');
     locPara.textContent = 'Location: ';
     const question = document.createElement('img');
@@ -57,6 +57,9 @@ export function initForm() {
         temp.textContent = str;
         ul.appendChild(temp);
     });
+    const no_time = document.createElement('div');
+    no_time.className = 'text';
+    no_time.textContent = "Wanna save time?";
     const para = document.createElement('a');
     para.textContent = "Use my location";
     para.addEventListener('click', () => {
@@ -64,8 +67,9 @@ export function initForm() {
             if (e.code != e.PERMISSION_DENIED) alert(`Fail to get location. Code: ${e.code}.`);
         });
     });
-    tooltip.append(title, ul, para);
-    question.addEventListener('click', () => {
+    tooltip.append(title, ul, no_time, para);
+    question.addEventListener('click', e => {
+        e.preventDefault();
         tooltip.classList.toggle('hidden');
     });
     document.addEventListener('click', e => {
@@ -75,7 +79,7 @@ export function initForm() {
     })
 
     const confirm = document.createElement('button');
-    confirm.textContent = "Update Weather";
+    confirm.textContent = "Update";
     confirm.type = 'submit';
 
     form.append(header, modeTitle, modeCont, locLabel, tooltip, confirm);

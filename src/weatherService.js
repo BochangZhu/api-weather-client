@@ -41,7 +41,14 @@ export class weatherService {
     
     // extract essential weather info
     async filterWeather(objPromise) {
-        const weatherObj = await objPromise;
+        let weatherObj;
+        try {
+            weatherObj = await objPromise;
+        }
+        catch (e) {
+            alert(e.message);
+            return;
+        }
         const currCondition = weatherObj["currentConditions"];
         const daysArr = weatherObj?.days;
         const {resolvedAddress: addr} = weatherObj;

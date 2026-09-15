@@ -16,81 +16,129 @@ input,button {
     --base-font: 'Hachi Maru Pop', cursive;
 
     --big-emph: bold 50px var(--base-font);
-    --mid-emph: bold 30px var(--base-font);
-    --mid-normal: 25px var(--base-font);
+    --mid-emph: bold 32.5px var(--base-font);
+    --mid-normal: 27.5px var(--base-font);
     --sm-normal: 17.5px var(--base-font);
     --sm-emph: bold 17.5px var(--base-font);
 
-    --form-sm: 10px "Charis SIL", serif;
-    --form-mid: bold 12px "Charis SIL", serif;
-    --form-big: 17px "Charis SIL", serif;
+    --form-sm: 16px "Charis SIL", serif;
+    --form-mid: bold 20px "Charis SIL", serif;
+    --form-big: bold 25px "Charis SIL", serif;
+
+    --confirm-blue-col: #0490d6;
+
+    --seperator-bd-style: 2px dashed #ccc;
 }
 form {
     font: var(--form-sm);
-    padding: 6px 12px;
+    padding-left: 12px;
     display: grid;
     grid-auto-flow: row;
-    grid-auto-columns: 1fr ;
-    gap: 6px;
+    grid-template-rows: 0.75fr 1fr 0.5fr 2fr 0.1fr 0.5fr;
+    align-items: center;
     .header {
         font: var(--form-big);
-        margin-bottom: 12px;
+        justify-self: center;
+        text-decoration: underline;
+
     }
     .modeCont {
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
+        padding: 0 6px;
         label {
             display: flex;
-            gap: 6px;
+            align-items: center;
+            justify-content: center;
+            font: var(--form-sm);
+            gap: 3px;
+            white-space: nowrap;
         }
     }
     p {
-        font: var(--form-mid)
+        font: var(--form-mid);
     }
     .locLabel {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
+        display: grid;
+        grid-auto-flow: row;
+        gap: 8px;
         position: relative;
+        input {
+            justify-self: center;
+        }
         img {
+            transition: transform 0.3s ease;
+            &:hover {
+                transform: scale(1.1);
+            }
             width: 30px;
             height: 30px;
             position: absolute;
-            right: 6px;
-            top: 50%;
+            right: 10px;
+            top: 58%;
+            cursor: help;
         }
     }
 
     input {
-        cursor: pointer;
         background: transparent;
         outline:none;
         border: 1px solid #ccc;
         padding: 5px 7.5px; 
-        width: 50%;
+        width: 95%;
         border-radius: 15px;
+    }
+
+    button {
+        grid-row-end: -1;
+        border-radius: 25px;
+        background: var(--confirm-blue-col);
+        justify-self: center;
+        padding: 2px 8px;
+        cursor: pointer;
     }
 
 
 }
 
 .tooltip {
-    display: flex;
+    &::before{
+        content: "";
+        position: absolute;
+        top: 37%;
+        right: 100%;
+        border-style: solid;
+        border-width: 12px 16px 12px 0; 
+        border-color: transparent  rgba(171, 205, 228, 0.75) transparent transparent;
+    }
+    display: grid;
     position: absolute;
-    flex-direction: column;
-    top: 95%;
-    right: 1rem;
+    top: 30%;
+    right: 12px;
+    width: 14%;
+    padding: 6px 12px;
+    background: rgba(171, 205, 228, 0.5);
     z-index: 99;
     border-radius: 25px;
+    li {
+        margin-left: 1.5rem;
+    }
+    .text {
+        margin-top: 6px;
+        font-weight: bold;
+        justify-self: center;
+    }
     a {
         all: unset;
         font-weight: bold;
         font-style: italic;
         cursor: pointer;
-        transition: transform 0.05s ease-in;
+        color: blue;
+        text-decoration: underline;
+        transition: transform 0.1s ease-in;
+        justify-self: center;
         &:hover {
             transform: scale(1.05);
-            text-decoration: underline;
         }
     }
 }
@@ -122,16 +170,16 @@ body::before {
     width: 70vw;
     height: 80vh;
     display: grid;
-    grid-template: 6fr 0.25fr 4fr / 7fr 0.25fr 3fr;
+    grid-template: 6fr 0.25fr 4fr / 7fr 3fr;
     grid-template-areas: 
-    "submain . form"
-    ". . ."
-    "weekly weekly weekly";
-    border: 3px solid #ccc;
+    "submain form"
+    ". ."
+    "weekly weekly";
+    border: 3px solid #61616133;
     border-radius: 25px;
     padding: 15px;
     background: rgba(255, 255, 255, 0.175);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
     .submain {
         position: relative;
         display: grid;
@@ -141,6 +189,7 @@ body::before {
         "img . condition temp"
         "img . time temp";
         grid-area: submain;
+        border-right: var(--seperator-bd-style);
         .location {
             grid-area: location;
             align-self: center;
@@ -173,30 +222,35 @@ body::before {
         }
         .toggle {
             position: absolute;
-            top: 0;
-            right: 0;
+            top: -5px;
+            right: 12px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            width: 65px;
-            height: 35px;
+            padding: 2px 6px 0 6px;
+            width: 80px;
+            height: 40px;
             background-color: #c3d6ef;
-            border-radius: 75%;
+            border-radius: 999px;
+            font: bold 22px serif;
             cursor: pointer;
             user-select: none;
+            input {
+                display: none;
+            }
             .slider {
                 position: absolute;
-                top: 10px;
-                left: 10px;
-                width: 25px;
-                height: 25px;
-                background-color: #0490d6;
+                top: 2.5px;
+                left: 2px;
+                width: 35px;
+                height: 35.5px;
+                background-color: var(--confirm-blue-col);
                 border-radius: 50%;
-                transition: transform 0.25 ease;
+                transition: transform 0.25s ease;
                 z-index: 1;
             }
             input:checked + .slider {
-                transform: translateX(20px);
+                transform: translateX(41px);
             }
             input:checked ~ .celsius {
                 color: white;
@@ -206,6 +260,7 @@ body::before {
             }
             span {
                 z-index: 2;
+                transition: color 0.2s ease;
             }
             .celsius {
                 color: grey;

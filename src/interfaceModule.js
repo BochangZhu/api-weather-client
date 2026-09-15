@@ -97,3 +97,7 @@ export function boardUpdate() {
 export function bgIMGReplace(imgPath) {
     document.body.setAttribute('style', `--bg-image: url(${imgPath})`);    
 }
+
+export function unitToggle() {
+    
+}
