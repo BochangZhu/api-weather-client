@@ -2,14 +2,17 @@ import clearPath from "./assets/clearBG.jpg";
 import cloudyPath from "./assets/cloudyBG.jpg";
 import rainPath from "./assets/rainBG.jpg";
 import snowPath from "./assets/snowBG.jpg";
-import stormPath from "./assets/stormBG.jpg";
+import stormPath from "./assets/stormBG.png";
+import fallbackIMGPath from "./assets/sunnyIcon.svg";
 import {addDays} from 'date-fns';
+
+import { fetchStickerUrl } from "./stickerService.js";
 
 export class weatherService {  
     #api;
     baseURL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
     
-    constructor(apiKey){
+    constructor(apiKey = ''){
         this.#api = apiKey;
     }
 
@@ -47,13 +50,14 @@ export class weatherService {
         }
         catch (e) {
             alert(e.message);
-            return;
+            throw e;
         }
         const currCondition = weatherObj["currentConditions"];
         const daysArr = weatherObj?.days;
         const {resolvedAddress: addr} = weatherObj;
         const {datetime, temp, conditions, icon: stickerDes} = currCondition;
 
+        // background img
         let BGImgPath;
         if (/cloudy/i.test(conditions)) {
             BGImgPath = cloudyPath;
@@ -71,7 +75,16 @@ export class weatherService {
             BGImgPath = clearPath;
         }
 
-        return {addr, datetime, temp, stickerDes, BGImgPath, daysArr};
+        // weatherImg
+        let stickerPath;
+        try {
+            stickerPath = await fetchStickerUrl(stickerDes);
+        }
+        catch {
+            stickerPath = fallbackIMGPath;
+        }
+
+        return {addr, datetime, temp, BGImgPath, stickerPath, daysArr};
     }
 
 }

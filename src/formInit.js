@@ -1,4 +1,3 @@
-
 export function initForm() {
     const form = document.createElement('form');
     form.className = 'form';
@@ -17,7 +16,7 @@ export function initForm() {
         const radio = document.createElement('input');
         radio.type = 'radio';
         radio.name = 'mode';
-        radio.value = str;
+        radio.value = i;
         if (!i) radio.checked = true;
         label.append(radio, str);
         modeCont.appendChild(label);
@@ -61,7 +60,7 @@ export function initForm() {
     no_time.className = 'text';
     no_time.textContent = "Wanna save time?";
     const para = document.createElement('a');
-    para.textContent = "Use my location";
+    para.textContent = "Access my location";
     para.addEventListener('click', () => {
         navigator.geolocation.getCurrentPosition((pos) => locInput.value = `${pos.coords.latitude},${pos.coords.longitude}`, (e) => {
             if (e.code != e.PERMISSION_DENIED) alert(`Fail to get location. Code: ${e.code}.`);
@@ -84,10 +83,6 @@ export function initForm() {
 
     form.append(header, modeTitle, modeCont, locLabel, tooltip, confirm);
     
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-    })
-
     return form;
 
 }

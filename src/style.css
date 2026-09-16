@@ -25,10 +25,11 @@ input,button {
     --form-mid: bold 20px "Charis SIL", serif;
     --form-big: bold 25px "Charis SIL", serif;
 
-    --confirm-blue-col: #0490d6;
+    --confirm-blue-col: rgb(35, 136, 230, .77);
 
-    --seperator-bd-style: 2px dashed #ccc;
+    --seperator-bd-style: 3px solid #88888855;
 }
+
 form {
     font: var(--form-sm);
     padding-left: 12px;
@@ -36,16 +37,20 @@ form {
     grid-auto-flow: row;
     grid-template-rows: 0.75fr 1fr 0.5fr 2fr 0.1fr 0.5fr;
     align-items: center;
+    padding: 6px;
     .header {
         font: var(--form-big);
         justify-self: center;
         text-decoration: underline;
-
     }
     .modeCont {
         display: flex;
         justify-content: space-between;
-        padding: 0 6px;
+        padding: 5px 6px;
+        border: 2px solid;
+        width: 98%;
+        justify-self: center;
+        border-radius: 15px;
         label {
             display: flex;
             align-items: center;
@@ -74,8 +79,8 @@ form {
             width: 30px;
             height: 30px;
             position: absolute;
-            right: 10px;
-            top: 58%;
+            right: 6px;
+            top: 57%;
             cursor: help;
         }
     }
@@ -83,9 +88,9 @@ form {
     input {
         background: transparent;
         outline:none;
-        border: 1px solid #ccc;
+        border: 2px solid;
         padding: 5px 7.5px; 
-        width: 95%;
+        width: 98%;
         border-radius: 15px;
     }
 
@@ -93,6 +98,7 @@ form {
         grid-row-end: -1;
         border-radius: 25px;
         background: var(--confirm-blue-col);
+        border: 2px solid;
         justify-self: center;
         padding: 2px 8px;
         cursor: pointer;
@@ -109,7 +115,7 @@ form {
         right: 100%;
         border-style: solid;
         border-width: 12px 16px 12px 0; 
-        border-color: transparent  rgba(171, 205, 228, 0.75) transparent transparent;
+        border-color: transparent  rgba(171, 205, 228, 0.5) transparent transparent;
     }
     display: grid;
     position: absolute;
@@ -170,18 +176,17 @@ body::before {
     width: 70vw;
     height: 80vh;
     display: grid;
-    grid-template: 6fr 0.25fr 4fr / 7fr 3fr;
+    grid-template: 6fr 4fr / 7fr 2fr;
     grid-template-areas: 
     "submain form"
-    ". ."
     "weekly weekly";
     border: 3px solid #61616133;
     border-radius: 25px;
-    padding: 15px;
     background: rgba(255, 255, 255, 0.175);
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
     .submain {
         position: relative;
+        padding: 6px 0 0 6px;
         display: grid;
         grid-template: 2fr 1fr 1fr / 1fr 0.2fr 1.4fr 0.6fr;
         grid-template-areas: 
@@ -222,7 +227,7 @@ body::before {
         }
         .toggle {
             position: absolute;
-            top: -5px;
+            top: 12px;
             right: 12px;
             display: flex;
             align-items: center;
@@ -230,7 +235,7 @@ body::before {
             padding: 2px 6px 0 6px;
             width: 80px;
             height: 40px;
-            background-color: #c3d6ef;
+            background-color: #c3d6ef88;
             border-radius: 999px;
             font: bold 22px serif;
             cursor: pointer;
@@ -244,7 +249,7 @@ body::before {
                 left: 2px;
                 width: 35px;
                 height: 35.5px;
-                background-color: var(--confirm-blue-col);
+                background-color: rgb(35, 136, 230);
                 border-radius: 50%;
                 transition: transform 0.25s ease;
                 z-index: 1;
@@ -272,19 +277,23 @@ body::before {
     }
     .form {
         grid-area: form;
+        overflow: auto;
     }
     .weeklyPanel {
         grid-area: weekly;
         overflow-x: auto;
         display: grid;
-        grid-template-rows: 1fr 3fr;
-        border-top: 2px dashed #ccc;
-        padding: 12px 0 0 6px;
+        grid-template-rows: 1fr 5fr;
+        border-top: var(--seperator-bd-style);
+        padding: 15px 15px 15px 20px;
         .weeklyTitle {
             font: var(--sm-emph);
         }
         .previewCont {
-            display: flex;
+            display: grid;
+            grid-auto-flow: column;
+            column-gap: 30px;
+            grid-auto-columns: calc((100% - 180px) / 7);
             align-items: center;
             justify-content: space-around;
         }
@@ -292,7 +301,21 @@ body::before {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-around;
+            justify-content: center;
+            font: var(--sm-normal);
+            gap: 3px;
+            &>div:last-of-type {
+                display: flex;
+                gap: 0px;
+                font: var(--mid-normal);
+                .tempValue {
+                    margin-left: 12px;
+                }
+                .unit {
+                    margin-left: 20px;
+                }
+
+            }
             .previewIcon {
                 width: 60px;
                 height: 60px;

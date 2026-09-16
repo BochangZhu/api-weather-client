@@ -22,7 +22,7 @@ export function boardInit() {
     const temperatureCont = document.createElement('div');
     temperatureCont.className = 'tempCont';
     const temperature = document.createElement('div');
-    temperature.className = "temperature";
+    temperature.className = "tempValue";
     temperature.textContent = '--';
     const unit = document.createElement('span');
     unit.className = "unit";
@@ -62,16 +62,17 @@ export function boardInit() {
         tempCont.className = 'preview';
         const date = document.createElement('div');
         date.className = 'date';
-        date.textContent = "~~/~~";
+        date.textContent = "-- / --";
         const previewIcon = document.createElement('img');
         previewIcon.className = 'previewIcon';
         previewIcon.src = sunnyIcon;
         const previewTemp = document.createElement('div');
         const value = document.createElement('div');
-        value.className = 'value';
+        value.className = 'tempValue';
         value.textContent = '~';
-        const unit = document.createElement('span');
+        const unit = document.createElement('div');
         unit.className = 'unit';
+        unit.textContent = ' °';
         previewTemp.append(value, unit);
 
         tempCont.append(date, previewIcon, previewTemp);
@@ -93,11 +94,27 @@ export function boardUpdate() {
 
 };
 
+const boardInfo = {
+    mode: -1,
+    tempArr: Array.from({length: 8}, () => [-1,-1]),
+    location: '',
+    condition: '',
+    time: '',
+    weekly_panel: Array.from({length: 7}, () => ({date: '', iconPath: ''})),
+    weatherIMGPath: '',
+    bgIMGPath: '',
+};
 
 export function bgIMGReplace(imgPath) {
     document.body.setAttribute('style', `--bg-image: url(${imgPath})`);    
 }
 
-export function unitToggle() {
-    
+export function unitToggle(unit) {
+    if (boardInfo.mode == -1) return;
+    const valArr = document.querySelectorAll(".tempValue");
+    valArr.forEach((node, i) => {
+        const val = +(node.textContent);
+        if (Number.isNaN(val)) return;
+        node.textContent = boardInfo.tempArr[i][unit];
+    });
 }

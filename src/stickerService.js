@@ -1,6 +1,6 @@
 const giphyURL = "api.giphy.com/v1/stickers/search";
 
-async function fetchStickerUrl(description, api) {
+async function fetchStickerUrl(description, api = '') {
     const url = `${giphyURL}?api_key=${api}&q=${description}&limit=1&rating=g`;
     const response = await fetch(url);
     if (!response.ok) throw new Error(`HTTP request failed for sticker with status: ${response.status}`);
