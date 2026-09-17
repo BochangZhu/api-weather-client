@@ -5,6 +5,28 @@ import snowyIcon from "./assets/snowyIcon.svg";
 import stormyIcon from "./assets/stormyIcon.svg";
 import sunnyIcon from "./assets/sunnyIcon.svg";
 
+function previewInit() {
+    const tempCont = document.createElement('div');
+    tempCont.className = 'preview';
+    const date = document.createElement('div');
+    date.className = 'date';
+    date.textContent = "-- / --";
+    const previewIcon = document.createElement('img');
+    previewIcon.className = 'previewIcon';
+    previewIcon.src = sunnyIcon;
+    const previewTemp = document.createElement('div');
+    const value = document.createElement('div');
+    value.className = 'tempValue';
+    value.textContent = '--';
+    const unit = document.createElement('div');
+    unit.className = 'unit';
+    unit.textContent = ' °';
+    previewTemp.append(value, unit);
+
+    tempCont.append(date, previewIcon, previewTemp);
+    return tempCont;
+}
+
 export function boardInit() {
     const mainCont = document.createElement('div');
     mainCont.className = 'mainCont';
@@ -38,6 +60,7 @@ export function boardInit() {
     toggle.className = "toggle";
     const tempInput = document.createElement('input');
     tempInput.type = 'checkbox';
+    tempInput.className = 'unitInput';
     const slider = document.createElement('div');
     slider.className = 'slider';
     const celsius = document.createElement('span');
@@ -57,27 +80,6 @@ export function boardInit() {
     weeklyTitle.className = 'weeklyTitle';
     const previewCont = document.createElement('div');
     previewCont.className = 'previewCont';
-    function previewInit() {
-        const tempCont = document.createElement('div');
-        tempCont.className = 'preview';
-        const date = document.createElement('div');
-        date.className = 'date';
-        date.textContent = "-- / --";
-        const previewIcon = document.createElement('img');
-        previewIcon.className = 'previewIcon';
-        previewIcon.src = sunnyIcon;
-        const previewTemp = document.createElement('div');
-        const value = document.createElement('div');
-        value.className = 'tempValue';
-        value.textContent = '~';
-        const unit = document.createElement('div');
-        unit.className = 'unit';
-        unit.textContent = ' °';
-        previewTemp.append(value, unit);
-
-        tempCont.append(date, previewIcon, previewTemp);
-        return tempCont;
-    }
     // prefill seven placeholder previews;
     for (let day = 0; day < 7; day++) {
         previewCont.appendChild(previewInit());
@@ -90,20 +92,70 @@ export function boardInit() {
 
 }
 
-export function boardUpdate() {
-
-};
 
 const boardInfo = {
     mode: -1,
-    tempArr: Array.from({length: 8}, () => [-1,-1]),
+    tempArr: Array.from({length: 16}, () => ['unknown', 'unknown']),
     location: '',
     condition: '',
     time: '',
-    weekly_panel: Array.from({length: 7}, () => ({date: '', iconPath: ''})),
+    weekly_panel: Array.from({length: 15}, () => ['unknown', 'unknown']),
     weatherIMGPath: '',
     bgIMGPath: '',
 };
+
+export function boardInfoUpdate(weatherObj) {
+    const {weeklyPanel, tempArr} = boardInfo;
+    const {daysArr} = weatherObj;
+
+    boardInfo.mode = weatherObj.mode;
+    tempArr[0] = [weatherObj.temp, Math.round((weatherObj.temp - 32) * 5 / 9)];
+    boardInfo.location = weatherObj.addr;
+    boardInfo.condition = weatherObj.conditions;
+    boardInfo.time = weatherObj.datetime;
+    boardInfo.weatherIMGPath = weatherObj.stickerPath;
+    boardInfo.bgIMGPath = weatherObj.BGImgPath;
+
+    if (daysArr) {
+        daysArr.forEach((day, i) => {
+            weeklyPanel[i] = [day.datetime, day.iconPath];
+            tempArr[i+1] = [day.temp, Math.round((day.temp - 32) * 5 / 9)];
+        });
+    } 
+
+    // store in localStorage
+    localStorage.setItem('prevData', JSON.stringify(boardInfo));
+};
+
+export function UILoad() {
+    const unitCode = document.querySelector('.unitInput').checked ? 1 : 0;
+    document.querySelector('.location').textContent = boardInfo.location;
+    document.querySelector('.conditions').textContent = boardInfo.location;
+    document.querySelector('.dateTime').textContent = boardInfo.time;
+    document.querySelector('.weatherImg').textContent = boardInfo.weatherIMGPath;
+    document.querySelector('.tempValue').textContent = boardInfo.tempArr[0][unitCode];
+
+    const weeklyCont = document.querySelector('.previewCont');
+    weeklyCont.replaceChildren();
+    // alter weekly panel display based on mode
+    switch (boardInfo.mode) {
+        case 0:
+            break;
+        case 1: 
+            document.querySelectorAll('.preview').forEach((preview, i) => {
+                const date = `${boardInfo.weekly_panel[i][0].slice(5, 7)} / ${boardInfo.weekly_panel[i][0].slice(8, 10)}`;
+                preview.querySelector('.date').textContent = date;
+                preview.querySelector('.previewIcon').src = boardInfo.weekly_panel[i][1];
+                preview.querySelector('.tempValue').textContent = boardInfo.tempArr[i+1][unitCode];
+            });
+            break;
+        case 2: 
+            break;
+    }
+
+}
+
+
 
 export function bgIMGReplace(imgPath) {
     document.body.setAttribute('style', `--bg-image: url(${imgPath})`);    

@@ -309,10 +309,12 @@ body::before {
                 gap: 0px;
                 font: var(--mid-normal);
                 .tempValue {
-                    margin-left: 12px;
+                    margin-left: 20px;
+                    position: relative;
+                    bottom: 5px;
                 }
                 .unit {
-                    margin-left: 20px;
+                    margin-left: 13px;
                 }
 
             }

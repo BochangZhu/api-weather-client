@@ -1,4 +1,4 @@
-import { boardInit, boardUpdate, unitToggle, bgIMGReplace } from "./interfaceModule.js";
+import { boardInit, boardInfoUpdate, unitToggle, bgIMGReplace } from "./interfaceModule.js";
 import { weatherService } from "./weatherService.js";
 import './style.css';
 
@@ -29,8 +29,12 @@ form.addEventListener("submit", (e) => {
             weatherPromise = weatherServiceObj.filterWeather(weatherServiceObj.fetch15days(locStr));
             break;
     }
+    let weatherDetail;
+    weatherPromise.then(obj => weatherDetail = obj);
 
-    weatherPromise.then().catch()
+    if (weatherDetail) {
+        weatherDetail = {mode: modeNum};
+    }
 });
 
 // unit toggle

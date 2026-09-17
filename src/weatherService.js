@@ -4,10 +4,33 @@ import rainPath from "./assets/rainBG.jpg";
 import snowPath from "./assets/snowBG.jpg";
 import stormPath from "./assets/stormBG.png";
 import fallbackIMGPath from "./assets/sunnyIcon.svg";
+
+import cloudyIcon from "./assets/cloudyIcon.svg";
+import rainyIcon from "./assets/rainyIcon.svg";
+import snowyIcon from "./assets/snowyIcon.svg";
+import stormyIcon from "./assets/stormyIcon.svg";
+import sunnyIcon from "./assets/sunnyIcon.svg";
 import {addDays} from 'date-fns';
 
 import { fetchStickerUrl } from "./stickerService.js";
 
+function getIconPath(conditions) {
+    if (/cloudy/i.test(conditions)) {
+        return cloudyIcon;
+    }
+    else if (/thunder/i.test(conditions)) {
+        return stormyIcon;
+    }
+    else if (/rain|shower/i.test(conditions)) {
+        return rainyIcon;
+    }
+    else if (/snow/i.test(conditions)) {
+        return snowyIcon;
+    }
+    else{ 
+        return fallbackIMGPath;
+    }
+}
 export class weatherService {  
     #api;
     baseURL = "https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/";
@@ -54,8 +77,8 @@ export class weatherService {
         }
         const currCondition = weatherObj["currentConditions"];
         const daysArr = weatherObj?.days;
-        const {resolvedAddress: addr} = weatherObj;
-        const {datetime, temp, conditions, icon: stickerDes} = currCondition;
+        const {resolvedAddress: addr = 'unknown'} = weatherObj;
+        const {datetime = 'unknown', temp = 'unknown', conditions = 'unknown', icon: stickerDes = 'unknown'} = currCondition;
 
         // background img
         let BGImgPath;
@@ -84,7 +107,11 @@ export class weatherService {
             stickerPath = fallbackIMGPath;
         }
 
-        return {addr, datetime, temp, BGImgPath, stickerPath, daysArr};
+        if (daysArr) {
+            daysArr.forEach(day => day.iconPath = getIconPath(day?.conditions));
+        }
+
+        return {addr, datetime, temp, BGImgPath, stickerPath, conditions, daysArr};
     }
 
 }
