@@ -1,16 +1,16 @@
-import { initForm } from "./formInit.js";
-import cloudyIcon from "./assets/cloudyIcon.svg";
-import rainyIcon from "./assets/rainyIcon.svg";
-import snowyIcon from "./assets/snowyIcon.svg";
-import stormyIcon from "./assets/stormyIcon.svg";
-import sunnyIcon from "./assets/sunnyIcon.svg";
+import { initForm } from './formInit.js';
+import sunnyIcon from './assets/sunnyIcon.svg';
+
+function bgIMGReplace(imgPath) {
+    document.body.setAttribute('style', `--bg-image: url(${imgPath})`);
+}
 
 function previewInit() {
     const tempCont = document.createElement('div');
     tempCont.className = 'preview';
     const date = document.createElement('div');
     date.className = 'date';
-    date.textContent = "-- / --";
+    date.textContent = '-- / --';
     const previewIcon = document.createElement('img');
     previewIcon.className = 'previewIcon';
     previewIcon.src = sunnyIcon;
@@ -34,30 +34,30 @@ export function boardInit() {
     const form = initForm();
 
     const submain = document.createElement('div');
-    submain.className = "submain";
+    submain.className = 'submain';
     const location = document.createElement('div');
     location.className = 'location';
-    location.textContent = 'Test Location';    
+    location.textContent = 'Test Location';
     const conditions = document.createElement('p');
     conditions.className = 'conditions';
     conditions.textContent = 'Unknown Condition';
     const temperatureCont = document.createElement('div');
     temperatureCont.className = 'tempCont';
     const temperature = document.createElement('div');
-    temperature.className = "tempValue";
+    temperature.className = 'tempValue';
     temperature.textContent = '--';
     const unit = document.createElement('span');
-    unit.className = "unit";
+    unit.className = 'unit';
     unit.textContent = '°';
     temperatureCont.append(temperature, unit);
     const dateTime = document.createElement('div');
     dateTime.className = 'dateTime';
     dateTime.textContent = '00:00';
     const weatherImg = document.createElement('img');
-    weatherImg.className = "weatherImg";
+    weatherImg.className = 'weatherImg';
     weatherImg.src = sunnyIcon;
     const toggle = document.createElement('label');
-    toggle.className = "toggle";
+    toggle.className = 'toggle';
     const tempInput = document.createElement('input');
     tempInput.type = 'checkbox';
     tempInput.className = 'unitInput';
@@ -71,12 +71,19 @@ export function boardInit() {
     faren.className = 'faren';
     toggle.append(tempInput, slider, faren, celsius);
 
-    submain.append(temperatureCont,dateTime,location, weatherImg, conditions, toggle);
+    submain.append(
+        temperatureCont,
+        dateTime,
+        location,
+        weatherImg,
+        conditions,
+        toggle
+    );
 
     const weeklyPanel = document.createElement('div');
-    weeklyPanel.className = "weeklyPanel";
+    weeklyPanel.className = 'weeklyPanel';
     const weeklyTitle = document.createElement('div');
-    weeklyTitle.textContent = "~ DAY FORECAST";
+    weeklyTitle.textContent = '~ DAY FORECAST';
     weeklyTitle.className = 'weeklyTitle';
     const previewCont = document.createElement('div');
     previewCont.className = 'previewCont';
@@ -89,27 +96,32 @@ export function boardInit() {
     mainCont.append(submain, form, weeklyPanel);
 
     document.body.appendChild(mainCont);
-
 }
 
-
-const boardInfo = {
+export let boardInfo = {
     mode: -1,
-    tempArr: Array.from({length: 16}, () => ['unknown', 'unknown']),
+    tempArr: Array.from({ length: 16 }, () => ['unknown', 'unknown']),
     location: '',
     condition: '',
     time: '',
-    weekly_panel: Array.from({length: 15}, () => ['unknown', 'unknown']),
+    weekly_panel: Array.from({ length: 15 }, () => ['unknown', 'unknown']),
     weatherIMGPath: '',
     bgIMGPath: '',
 };
 
+export function boardInfoReplace(newObj) {
+    boardInfo = newObj;
+}
+
 export function boardInfoUpdate(weatherObj) {
-    const {weeklyPanel, tempArr} = boardInfo;
-    const {daysArr} = weatherObj;
+    const { weekly_panel, tempArr } = boardInfo;
+    const { daysArr } = weatherObj;
 
     boardInfo.mode = weatherObj.mode;
-    tempArr[0] = [weatherObj.temp, Math.round((weatherObj.temp - 32) * 5 / 9)];
+    tempArr[0] = [
+        weatherObj.temp,
+        Math.round(((weatherObj.temp - 32) * 5) / 9),
+    ];
     boardInfo.location = weatherObj.addr;
     boardInfo.condition = weatherObj.conditions;
     boardInfo.time = weatherObj.datetime;
@@ -118,55 +130,69 @@ export function boardInfoUpdate(weatherObj) {
 
     if (daysArr) {
         daysArr.forEach((day, i) => {
-            weeklyPanel[i] = [day.datetime, day.iconPath];
-            tempArr[i+1] = [day.temp, Math.round((day.temp - 32) * 5 / 9)];
+            weekly_panel[i] = [day.datetime, day.iconPath];
+            tempArr[i + 1] = [day.temp, Math.round(((day.temp - 32) * 5) / 9)];
         });
-    } 
+    }
 
     // store in localStorage
     localStorage.setItem('prevData', JSON.stringify(boardInfo));
-};
+}
 
 export function UILoad() {
     const unitCode = document.querySelector('.unitInput').checked ? 1 : 0;
     document.querySelector('.location').textContent = boardInfo.location;
-    document.querySelector('.conditions').textContent = boardInfo.location;
+    document.querySelector('.conditions').textContent = boardInfo.condition;
     document.querySelector('.dateTime').textContent = boardInfo.time;
-    document.querySelector('.weatherImg').textContent = boardInfo.weatherIMGPath;
-    document.querySelector('.tempValue').textContent = boardInfo.tempArr[0][unitCode];
+    document.querySelector('.weatherImg').src = boardInfo.weatherIMGPath;
+    document.querySelector('.tempValue').textContent =
+        boardInfo.tempArr[0][unitCode];
+    bgIMGReplace(boardInfo.bgIMGPath);
 
     const weeklyCont = document.querySelector('.previewCont');
     weeklyCont.replaceChildren();
+    const weeklyTitle = document.querySelector('.weeklyTitle');
     // alter weekly panel display based on mode
     switch (boardInfo.mode) {
-        case 0:
-            break;
-        case 1: 
+        case 1:
+            document.querySelector('.mainCont').classList.remove('concise');
+            for (let day = 0; day < 7; day++) {
+                weeklyCont.appendChild(previewInit());
+            }
+            weeklyTitle.textContent = '7 DAY FORECAST';
             document.querySelectorAll('.preview').forEach((preview, i) => {
                 const date = `${boardInfo.weekly_panel[i][0].slice(5, 7)} / ${boardInfo.weekly_panel[i][0].slice(8, 10)}`;
                 preview.querySelector('.date').textContent = date;
-                preview.querySelector('.previewIcon').src = boardInfo.weekly_panel[i][1];
-                preview.querySelector('.tempValue').textContent = boardInfo.tempArr[i+1][unitCode];
+                preview.querySelector('.previewIcon').src =
+                    boardInfo.weekly_panel[i][1];
+                preview.querySelector('.tempValue').textContent =
+                    boardInfo.tempArr[i + 1][unitCode];
             });
             break;
-        case 2: 
+        case 2:
+            document.querySelector('.mainCont').classList.remove('concise');
+            for (let day = 0; day < 15; day++) {
+                weeklyCont.appendChild(previewInit());
+            }
+            weeklyTitle.textContent = '15 DAY FORECAST';
+            document.querySelectorAll('.preview').forEach((preview, i) => {
+                const date = `${boardInfo.weekly_panel[i][0].slice(5, 7)} / ${boardInfo.weekly_panel[i][0].slice(8, 10)}`;
+                preview.querySelector('.date').textContent = date;
+                preview.querySelector('.previewIcon').src =
+                    boardInfo.weekly_panel[i][1];
+                preview.querySelector('.tempValue').textContent =
+                    boardInfo.tempArr[i + 1][unitCode];
+            });
             break;
+        default:
+            document.querySelector('.mainCont').classList.add('concise');
     }
-
 }
 
-
-
-export function bgIMGReplace(imgPath) {
-    document.body.setAttribute('style', `--bg-image: url(${imgPath})`);    
-}
-
-export function unitToggle(unit) {
+export function unitToggle(newUnit) {
     if (boardInfo.mode == -1) return;
-    const valArr = document.querySelectorAll(".tempValue");
-    valArr.forEach((node, i) => {
-        const val = +(node.textContent);
-        if (Number.isNaN(val)) return;
-        node.textContent = boardInfo.tempArr[i][unit];
+    localStorage.setItem('prevUnit', newUnit);
+    document.querySelectorAll('.tempValue').forEach((temp, i) => {
+        temp.textContent = boardInfo.tempArr[i][newUnit];
     });
 }
