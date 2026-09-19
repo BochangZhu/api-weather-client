@@ -3,6 +3,7 @@
 A frontend application developed as part of The Odin Project curriculum. The goal of this project is to practice concepts of asynchronous JavaScript, API integration and usage of modules.
 
 ## Previews
+**Live Demo:** [https://bochangzhu.github.io/api-weather-client/]
 ![7days-demo](./screenshots/Neryungri-RU-7Days.png)
 
 ## Integration
