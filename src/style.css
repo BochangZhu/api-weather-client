@@ -42,8 +42,25 @@ button {
     --form-big: bold 25px 'Charis SIL', serif;
 
     --confirm-blue-col: rgb(35, 136, 230, 0.77);
-
     --seperator-bd-style: 3px solid #88888855;
+
+    --sunny-thumb: rgba(251, 191, 36, 0.2);
+    --sunny-hover: rgba(245, 158, 11, 0.3);
+
+    --cloudy-thumb: rgba(148, 163, 184, 0.2);
+    --cloudy-hover: rgba(100, 116, 139, 0.3);
+
+    --rain-thumb: rgba(56, 189, 248, 0.2);
+    --rain-hover: rgba(2, 132, 199, 0.3);
+
+    --snow-thumb: rgba(224, 242, 254, 0.2);
+    --snow-hover: rgba(255, 255, 255, 0.3);
+
+    --storm-thumb: rgba(167, 139, 250, 0.2);
+    --storm-hover: rgba(124, 58, 237, 0.3);
+
+    --fb-thumb: rgba(62, 64, 68, 0.2);
+    --fb-hover: rgba(62, 64, 68, 0.3);
 }
 
 form {
@@ -315,21 +332,29 @@ body::before {
     }
     .weeklyPanel {
         grid-area: weekly;
-        overflow-x: auto;
         overflow-y: hidden;
         display: grid;
         grid-template-rows: 1fr 5fr;
         border-top: var(--seperator-bd-style);
-        padding: 15px 15px 15px 20px;
-        scrollbar-width: none;
-        &::-webkit-scrollbar {
-            display: none;
-        }
+        padding: 5px 15px 15px 20px;
+        gap: 6px;
         .weeklyTitle {
             font: var(--sm-emph);
         }
         .previewCont {
+            padding-bottom: 6px;
+            &::-webkit-scrollbar {
+                height: 10px;
+            }
+            &::-webkit-scrollbar-thumb {
+                background: var(--thumb-col, --fb-thumb);
+                border-radius: 10px;
+            }
+            &::-webkit-scrollbar-thumb:hover {
+                background: var(--hover-col, --fb-hover);
+            }
             display: grid;
+            overflow-x: auto;
             grid-auto-flow: column;
             column-gap: 30px;
             grid-auto-columns: calc((100% - 180px) / 7);

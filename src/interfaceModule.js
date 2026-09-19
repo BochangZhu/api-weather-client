@@ -103,6 +103,7 @@ export let boardInfo = {
     tempArr: Array.from({ length: 16 }, () => ['unknown', 'unknown']),
     location: '',
     condition: '',
+    condition_simp: '',
     time: '',
     weekly_panel: Array.from({ length: 15 }, () => ['unknown', 'unknown']),
     weatherIMGPath: '',
@@ -127,6 +128,7 @@ export function boardInfoUpdate(weatherObj) {
     boardInfo.time = weatherObj.datetime;
     boardInfo.weatherIMGPath = weatherObj.stickerPath;
     boardInfo.bgIMGPath = weatherObj.BGImgPath;
+    boardInfo.condition_simp = weatherObj.conditionSimp;
 
     if (daysArr) {
         daysArr.forEach((day, i) => {
@@ -151,6 +153,11 @@ export function UILoad() {
 
     const weeklyCont = document.querySelector('.previewCont');
     weeklyCont.replaceChildren();
+    const condition = boardInfo.condition_simp;
+    weeklyCont.setAttribute(
+        'style',
+        `--thumb-col: var(--${condition}-thumb, --fb-thumb); --hover-col: var(--${condition}-hover, --fb-hover)`
+    );
     const weeklyTitle = document.querySelector('.weeklyTitle');
     // alter weekly panel display based on mode
     switch (boardInfo.mode) {

@@ -112,16 +112,22 @@ export class weatherService {
 
         // background img
         let BGImgPath;
+        let conditionSimp;
         if (/cloudy/i.test(conditions)) {
             BGImgPath = cloudyPath;
+            conditionSimp = 'cloudy';
         } else if (/thunder/i.test(conditions)) {
             BGImgPath = stormPath;
+            conditionSimp = 'storm';
         } else if (/rain|shower/i.test(conditions)) {
             BGImgPath = rainPath;
+            conditionSimp = 'rain';
         } else if (/snow/i.test(conditions)) {
             BGImgPath = snowPath;
+            conditionSimp = 'snow';
         } else {
             BGImgPath = clearPath;
+            conditionSimp = 'sunny';
         }
 
         // weatherImg
@@ -149,6 +155,7 @@ export class weatherService {
             BGImgPath,
             stickerPath,
             conditions,
+            conditionSimp,
             daysArr,
         };
     }
